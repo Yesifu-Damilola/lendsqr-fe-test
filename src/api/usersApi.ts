@@ -1,4 +1,4 @@
-import { isAxiosError } from "axios";
+import axios, { isAxiosError } from "axios";
 import type { UserDetailData, UserRow } from "@/types/users";
 import { getUserDetail } from "@/data/mockUsers";
 import { getMockUserRows } from "@/data/mockUsersSeed";
@@ -136,7 +136,9 @@ export async function fetchUsersForTablePaginated({
 
   try {
     const target = usersListRequestTarget();
-    const { data } = await httpClient.get<unknown>(target, { params });
+    const { data } = USERS_URL
+      ? await axios.get<unknown>(USERS_URL, { params })
+      : await httpClient.get<unknown>(target, { params });
     const rows = normalizeUsersResponse(data);
     const filtered = q ? filterUsersByQuery(rows, q) : rows;
 

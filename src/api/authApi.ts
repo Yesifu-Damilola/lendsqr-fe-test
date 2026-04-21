@@ -3,13 +3,27 @@ import type { LoginRequest, LoginResponse } from "@/types/auth";
 
 const DEFAULT_BASE_URL = "https://run.mocky.io/v3";
 const LOGIN_ENDPOINT = "login";
-const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL;
 const RAW_BASE_URL = process.env.NEXT_PUBLIC_MOCK_API_BASE_URL;
 const BASE_URL = RAW_BASE_URL?.trim() || DEFAULT_BASE_URL;
 
+function shouldUseRootRelativeLoginEndpoint(baseUrl: string): boolean {
+  try {
+    const pathnameParts = new URL(baseUrl).pathname
+      .split("/")
+      .filter(Boolean);
+    // Mocky collection root looks like /v3, while a published mock endpoint
+    // looks like /v3/{uuid}. For /v3/{uuid}, post directly to baseURL.
+    return !(pathnameParts[0] === "v3" && pathnameParts.length >= 2);
+  } catch {
+    return true;
+  }
+}
+
 export async function login(payload: LoginRequest): Promise<LoginResponse> {
   try {
-    const target = LOGIN_URL?.trim() || LOGIN_ENDPOINT;
+    const target = shouldUseRootRelativeLoginEndpoint(BASE_URL)
+      ? LOGIN_ENDPOINT
+      : "";
     const { data } = await axios.post<LoginResponse>(target, payload, {
       baseURL: BASE_URL,
       timeout: 1000,
