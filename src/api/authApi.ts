@@ -5,6 +5,7 @@ const DEFAULT_BASE_URL = "https://run.mocky.io/v3";
 const LOGIN_ENDPOINT = "login";
 const RAW_BASE_URL = process.env.NEXT_PUBLIC_MOCK_API_BASE_URL;
 const BASE_URL = RAW_BASE_URL?.trim() || DEFAULT_BASE_URL;
+const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL?.trim();
 
 function shouldUseRootRelativeLoginEndpoint(baseUrl: string): boolean {
   try {
@@ -21,16 +22,22 @@ function shouldUseRootRelativeLoginEndpoint(baseUrl: string): boolean {
 
 export async function login(payload: LoginRequest): Promise<LoginResponse> {
   try {
-    const target = shouldUseRootRelativeLoginEndpoint(BASE_URL)
-      ? LOGIN_ENDPOINT
-      : "";
-    const { data } = await axios.post<LoginResponse>(target, payload, {
-      baseURL: BASE_URL,
-      timeout: 1000,
+    const requestConfig = {
+      timeout: 10000,
       headers: {
         "Content-Type": "application/json",
       },
-    });
+    };
+    const { data } = LOGIN_URL
+      ? await axios.post<LoginResponse>(LOGIN_URL, payload, requestConfig)
+      : await axios.post<LoginResponse>(
+          shouldUseRootRelativeLoginEndpoint(BASE_URL) ? LOGIN_ENDPOINT : "",
+          payload,
+          {
+            ...requestConfig,
+            baseURL: BASE_URL,
+          },
+        );
     if (!data?.token) {
       throw new Error("Invalid login response from mock API.");
     }
