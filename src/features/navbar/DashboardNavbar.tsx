@@ -64,7 +64,7 @@ const DashboardNavbar = ({
               alt="lendsqr"
               width={138}
               height={28}
-              style={{ width: "auto", height: "auto" }}
+              style={{ height: "auto" }}
               priority
             />
           </Link>

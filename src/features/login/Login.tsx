@@ -9,7 +9,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { loginSchema, LoginFormValues } from "@/schemas/loginSchema";
 import { useLoginMutation } from "@/query/useLoginMutation";
-import { loginResponseToSession, writeAuthSessionFromStorage } from "@/lib/authSessionStorage";
+import {
+  loginResponseToSession,
+  writeAuthSessionFromStorage,
+} from "@/lib/authSessionStorage";
 import styles from "./page.module.scss";
 
 function getLoginErrorMessage(error: unknown) {
@@ -70,7 +73,7 @@ export default function Home() {
             alt="lendsqr"
             width={174}
             height={36}
-            style={{ width: "auto", height: "auto" }}
+            style={{ height: "auto" }}
             priority
           />
           <Image
@@ -93,7 +96,7 @@ export default function Home() {
               alt="lendsqr"
               width={174}
               height={36}
-              style={{ width: "auto", height: "auto" }}
+              style={{ height: "auto" }}
               priority
             />
           </div>

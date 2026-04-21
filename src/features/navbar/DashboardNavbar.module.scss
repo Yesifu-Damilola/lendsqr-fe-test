@@ -92,7 +92,6 @@ $border-subtle: rgb(84 95 125 / 12%);
 
 .logoImg {
   width: 138px;
-  max-width: 100%;
   height: auto;
 
   @include breakpoint-navbar-xs {
