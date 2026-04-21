@@ -1,0 +1,357 @@
+@use "../../styles/tokens" as *;
+
+$border-subtle: rgb(84 95 125 / 12%);
+
+@mixin breakpoint-dashboard-sm {
+  @media (max-width: 900px) {
+    @content;
+  }
+}
+
+@mixin breakpoint-navbar-xs {
+  @media (max-width: 520px) {
+    @content;
+  }
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 15;
+  width: 100%;
+  font-family: var(--font-work-sans), system-ui, sans-serif;
+  background: $white;
+  box-shadow: 3px 0 20px rgb(0 0 0 / 4%);
+}
+
+.topbar {
+  display: grid;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  min-height: 72px;
+  padding: 0.75rem 1.875rem;
+  border-bottom: 1px solid $border-subtle;
+  background: $white;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
+
+  @include breakpoint-dashboard-sm {
+    min-height: 0;
+    /* minmax(0, 1fr) lets the logo row shrink instead of forcing horizontal overflow */
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "start actions"
+      "search search";
+    gap: 0.75rem 1rem;
+    padding: 0.75rem 1rem 1rem;
+  }
+
+  @include breakpoint-navbar-xs {
+    gap: 0.65rem 0.5rem;
+    padding: 0.65rem 0.75rem 0.85rem;
+  }
+}
+
+.topbarStart {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+
+  @include breakpoint-dashboard-sm {
+    grid-area: start;
+    /* Allow the logo to shrink within the row on narrow phones */
+    overflow: hidden;
+  }
+
+  @include breakpoint-navbar-xs {
+    gap: 0.5rem;
+  }
+}
+
+.topbarLogo {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.logoImg {
+  width: 138px;
+  max-width: 100%;
+  height: auto;
+
+  @include breakpoint-navbar-xs {
+    width: 104px;
+  }
+}
+
+.menuBtn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid $input-border;
+  border-radius: 8px;
+  background: $white;
+  color: $blue-primary;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: rgb(57 205 204 / 35%);
+    box-shadow: 0 1px 0 rgb(57 205 204 / 12%);
+  }
+
+  @include breakpoint-dashboard-sm {
+    display: inline-flex;
+  }
+}
+
+.searchBlock {
+  display: flex;
+  max-width: min(560px, 100%);
+  margin: 0 auto;
+  width: 100%;
+  align-items: stretch;
+  justify-content: center;
+
+  @include breakpoint-dashboard-sm {
+    grid-area: search;
+    max-width: none;
+    margin: 0;
+  }
+}
+
+.searchField {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
+  padding: 0 1rem;
+  border: 1px solid rgb(33 63 125 / 18%);
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  background: $white;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:focus-within {
+    border-color: rgb(57 205 204 / 55%);
+    box-shadow: 0 0 0 2px rgb(57 205 204 / 12%);
+  }
+
+  input {
+    width: 100%;
+    min-width: 0;
+    height: 48px;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 400;
+    color: $text-primary;
+    outline: none;
+
+    &::placeholder {
+      color: rgb(84 95 125 / 55%);
+    }
+
+    @include breakpoint-navbar-xs {
+      height: 44px;
+      font-size: 13px;
+    }
+  }
+}
+
+.searchSubmit {
+  display: inline-flex;
+  width: 56px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  background: $green-primary;
+  color: $white;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+
+  &:hover {
+    filter: brightness(0.96);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $blue-primary;
+    outline-offset: 2px;
+  }
+
+  @include breakpoint-navbar-xs {
+    width: 48px;
+  }
+}
+
+.topbarActions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  justify-self: end;
+  min-width: 0;
+  flex-shrink: 0;
+
+  @include breakpoint-dashboard-sm {
+    grid-area: actions;
+    justify-self: end;
+  }
+
+  @include breakpoint-navbar-xs {
+    gap: 0.15rem;
+  }
+}
+
+.docsLink {
+  padding: 0.4rem 0.75rem;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  color: $blue-primary;
+  border-radius: 6px;
+  letter-spacing: 0.01em;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgb(33 63 125 / 6%);
+  }
+
+  @include breakpoint-dashboard-sm {
+    font-size: 14px;
+    padding: 0.35rem 0.5rem;
+  }
+
+  @include breakpoint-navbar-xs {
+    display: none;
+  }
+}
+
+.iconBtn {
+  position: relative;
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: $blue-primary;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgb(33 63 125 / 6%);
+  }
+
+  @include breakpoint-navbar-xs {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.iconBtnBadge {
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  width: 7px;
+  height: 7px;
+  border: 2px solid $white;
+  border-radius: 50%;
+  background: #e4033b;
+  pointer-events: none;
+}
+
+.profileBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-left: 0.15rem;
+  padding: 0.2rem 0.45rem 0.2rem 0.2rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  color: $blue-primary;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgb(33 63 125 / 6%);
+  }
+
+  @include breakpoint-navbar-xs {
+    gap: 0;
+    margin-left: 0;
+    padding: 0.15rem;
+  }
+}
+
+.profileAvatar {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(
+    145deg,
+    rgb(33 63 125 / 14%) 0%,
+    rgb(57 205 204 / 28%) 100%
+  );
+  font-size: 13px;
+  font-weight: 700;
+  color: $blue-primary;
+}
+
+.profileName {
+  max-width: 10rem;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @include breakpoint-dashboard-sm {
+    max-width: 6.5rem;
+    font-size: 14px;
+  }
+
+  @include breakpoint-navbar-xs {
+    display: none;
+  }
+}
+
+.profileBtnChevron {
+  flex-shrink: 0;
+
+  @include breakpoint-navbar-xs {
+    display: none;
+  }
+}

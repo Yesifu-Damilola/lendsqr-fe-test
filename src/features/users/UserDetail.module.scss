@@ -1,0 +1,472 @@
+@use "../../styles/tokens" as *;
+
+.root {
+  font-family: var(--font-work-sans), system-ui, sans-serif;
+}
+
+$border-subtle: rgb(84 95 125 / 12%);
+$status-blacklist-text: #e4033b;
+
+@mixin breakpoint-user-md {
+  @media (max-width: 900px) {
+    @content;
+  }
+}
+
+.pageTitleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 1.25rem;
+}
+
+.pageTitle {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: $blue-primary;
+
+  @include breakpoint-user-md {
+    font-size: 1.25rem;
+  }
+}
+
+.backRow {
+  margin: 0 0 1rem;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: none;
+  padding: 0;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 400;
+  color: $text-primary;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    color: $blue-primary;
+  }
+}
+
+.headerCard {
+  margin-bottom: 2rem;
+  padding: 1.75rem 1.875rem 0;
+  border: 1px solid $border-subtle;
+  border-radius: 4px;
+  background: $white;
+  box-shadow: 3px 5px 20px rgb(0 0 0 / 4%);
+
+  @include breakpoint-user-md {
+    padding: 1.25rem 1rem 0;
+  }
+}
+
+.summaryRow {
+  display: grid;
+  align-items: center;
+  gap: 1.25rem 2.25rem;
+  grid-template-columns: minmax(0, 1.2fr) minmax(160px, 0.85fr) minmax(
+      210px,
+      1fr
+    );
+
+  @include breakpoint-user-md {
+    grid-template-columns: 1fr;
+  }
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  min-height: 80px;
+  padding-right: 2rem;
+
+  @media (min-width: 901px) {
+    border-right: 1px solid $border-subtle;
+  }
+}
+
+.avatar {
+  display: flex;
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgb(33 63 125 / 6%);
+  color: rgb(33 63 125 / 60%);
+
+  @include breakpoint-user-md {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.identityText {
+  min-width: 0;
+}
+
+.name {
+  margin: 0 0 0.45rem;
+  font-size: 1.375rem;
+  font-weight: 500;
+  color: $blue-primary;
+
+  @include breakpoint-user-md {
+    font-size: 1.2rem;
+  }
+}
+
+.tierBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-height: 80px;
+  justify-content: center;
+  padding-right: 2rem;
+
+  @media (min-width: 901px) {
+    border-right: 1px solid $border-subtle;
+  }
+
+  @include breakpoint-user-md {
+    border-top: 1px solid $border-subtle;
+    padding-top: 1rem;
+    padding-right: 0;
+  }
+}
+
+.tierLabel {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgb(84 95 125 / 90%);
+}
+
+.tierStars {
+  display: flex;
+  gap: 0.15rem;
+}
+
+.tierStarFilled {
+  color: #e9b200;
+}
+
+.tierStarEmpty {
+  color: rgb(84 95 125 / 30%);
+}
+
+.bankBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 80px;
+  gap: 0.5rem;
+  text-align: left;
+
+  @include breakpoint-user-md {
+    border-top: 1px solid $border-subtle;
+    padding-top: 1rem;
+  }
+}
+
+.bankAmount {
+  font-size: 1.875rem;
+  font-weight: 500;
+  color: $blue-primary;
+
+  @include breakpoint-user-md {
+    font-size: 1.15rem;
+  }
+}
+
+.bankMeta {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgb(33 63 125 / 85%);
+}
+
+.userCode {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: $text-primary;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.actionBlacklist {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid $status-blacklist-text;
+  border-radius: 8px;
+  background: $white;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $status-blacklist-text;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgb(228 3 59 / 6%);
+  }
+}
+
+.actionActivate {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid $green-primary;
+  border-radius: 8px;
+  background: $white;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $green-primary;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgb(57 205 204 / 10%);
+  }
+}
+
+.divider {
+  height: 1px;
+  margin: 1.55rem -1.875rem 0;
+  border: 0;
+  background: $border-subtle;
+
+  @include breakpoint-user-md {
+    margin-right: -1rem;
+    margin-left: -1rem;
+  }
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  margin-top: 1rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.tab {
+  position: relative;
+  padding: 0.5rem 0 0.75rem;
+  border: none;
+  background: transparent;
+  white-space: nowrap;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgb(0 0 0 / 80%);
+  cursor: pointer;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: $text-primary;
+  }
+}
+
+.tabActive {
+  font-weight: 400;
+  color: $green-primary;
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: $green-primary;
+  }
+}
+
+.panel {
+  margin-top: 1.5rem;
+}
+
+.detailCard {
+  overflow: hidden;
+  border: 1px solid $border-subtle;
+  border-radius: 4px;
+  background: $white;
+  box-shadow: 0 4px 24px rgb(0 0 0 / 4%);
+}
+
+.section {
+  margin: 0;
+  padding: 1.5rem 1.75rem 1.5rem;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+
+  @include breakpoint-user-md {
+    padding: 1.25rem 1rem;
+  }
+
+  & + & {
+    border-top: 1px solid rgb(33 63 125 / 12%);
+  }
+}
+
+.sectionTitle {
+  margin: 0 0 1.25rem;
+  font-size: 16px;
+  font-weight: 500;
+  color: $blue-primary;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem 1.75rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+
+  @include breakpoint-user-md {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gridPersonal {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.gridEducation {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.gridSocials {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.gridGuarantor {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.fieldLabel {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: rgb(84 95 125 / 65%);
+}
+
+.fieldValue {
+  font-size: 16px;
+  font-weight: 500;
+  color: $blue-primary;
+  word-break: break-word;
+}
+
+.placeholder {
+  margin: 0;
+  padding: 2rem 1rem;
+  border: 1px dashed $border-subtle;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+  color: rgb(84 95 125 / 65%);
+}
+
+.queryMessage,
+.queryError {
+  margin: 0;
+  padding: 1.2rem 1rem;
+  border: 1px dashed $border-subtle;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.queryMessage {
+  color: rgb(84 95 125 / 70%);
+}
+
+.queryError {
+  color: #c51a44;
+}
+
+/* —— Skeleton (API-driven values only) —— */
+
+.headerInlineMessage {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 0.5rem 0 1rem;
+  font-size: 14px;
+  line-height: 1.45;
+  text-align: center;
+  color: rgb(84 95 125 / 85%);
+}
+
+.headerInlineMessageError {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 0.5rem 0 1rem;
+  font-size: 14px;
+  line-height: 1.45;
+  text-align: center;
+  color: #c51a44;
+}
+
+.skeletonName {
+  width: min(100%, 14rem);
+  height: 22px;
+  margin-bottom: 0.45rem;
+}
+
+.skeletonUserCode {
+  width: 8rem;
+  height: 14px;
+}
+
+.skeletonTierLabel {
+  width: 5.5rem;
+  height: 14px;
+}
+
+.skeletonBankAmount {
+  width: min(100%, 11rem);
+  height: 30px;
+}
+
+.skeletonBankMeta {
+  width: min(100%, 14rem);
+  height: 14px;
+}
+
+.skeletonFieldValue {
+  width: min(100%, 7rem);
+  height: 16px;
+}

@@ -1,0 +1,32 @@
+.root {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: rgb(84 95 125 / 10%);
+}
+
+.root::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 55%),
+    transparent
+  );
+  animation: skeleton-shimmer 1.35s ease-in-out infinite;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

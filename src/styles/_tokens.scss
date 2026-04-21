@@ -1,0 +1,77 @@
+// Design tokens aligned with Lendsqr assessment / Figma (colors & type scale)
+$blue-primary: #213f7d;
+$text-primary: #545f7d;
+$green-primary: #39cdcc;
+$white: #ffffff;
+$input-border: #545f7d26;
+$form-shadow: 0 15px 90px rgb(0 0 0 / 3%);
+
+$font-size-title: 2rem;
+$font-size-subtitle: 20px;
+$font-size-label: 12px;
+$font-size-input: 14px;
+$font-size-link: 12px;
+$font-size-toggle: 12px;
+$font-size-button: 14px;
+
+$radius-input: 5px;
+$radius-button: 8px;
+
+$space-after-header: 60px;
+$space-field-gap: 24px;
+$space-before-submit: 30px;
+$space-after-password: 24px;
+
+@mixin breakpoint-tablet-lg {
+  @media (max-width: 900px) {
+    @content;
+  }
+}
+
+@mixin lendsqr-input-base {
+  width: 100%;
+  height: 50px;
+  border: 2px solid $input-border;
+  border-radius: $radius-input;
+  font-size: $font-size-input;
+  font-weight: 400;
+  color: $text-primary;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &::placeholder {
+    color: rgb(84 95 125 / 55%);
+  }
+
+  &:focus {
+    border-color: $green-primary;
+    box-shadow: 0 0 0 3px rgb(57 205 204 / 18%);
+  }
+}
+
+@mixin lendsqr-button-primary {
+  width: 100%;
+  margin-top: $space-before-submit;
+  padding: 15px 20px;
+  border: none;
+  border-radius: $radius-button;
+  background-color: $green-primary;
+  color: $white;
+  font-size: $font-size-button;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #33bab9;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgb(57 205 204 / 35%);
+  }
+}
