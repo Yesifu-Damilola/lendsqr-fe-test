@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import DashboardWrapper from "@/features/dashboard/DashboardWrapper";
 import UserDetail from "@/features/users/UserDetail";
 
+export const dynamic = "force-dynamic";
+
 type PageProps = {
   params: Promise<{ id: string }>;
 };

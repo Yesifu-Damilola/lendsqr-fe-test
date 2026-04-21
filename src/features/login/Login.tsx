@@ -70,7 +70,7 @@ export default function Home() {
             alt="lendsqr"
             width={174}
             height={36}
-            style={{ height: "auto" }}
+            style={{ width: "auto", height: "auto" }}
             priority
           />
           <Image
@@ -93,7 +93,7 @@ export default function Home() {
               alt="lendsqr"
               width={174}
               height={36}
-              style={{ height: "auto" }}
+              style={{ width: "auto", height: "auto" }}
               priority
             />
           </div>
