@@ -26,6 +26,65 @@ const USER_DETAIL_URL = process.env.NEXT_PUBLIC_USER_DETAILS_URL?.trim();
 const LENDSQR_PUBLIC_USERS_LIST_URL =
   "https://6270020422c706a0ae70b72c.mockapi.io/lendsqr/api/v1/users";
 
+async function fetchUsersPageViaInternalApi(params: {
+  searchQuery: string;
+  page: number;
+  pageSize: number;
+}): Promise<PaginatedUsersResult> {
+  const origin =
+    typeof window !== "undefined" ? window.location.origin : null;
+  if (!origin) {
+    throw new Error("Internal API fallback is only available in browser runtime.");
+  }
+
+  const q = params.searchQuery.trim();
+  const sp = new URLSearchParams({
+    page: String(params.page),
+    limit: String(params.pageSize),
+  });
+  if (q) sp.set("query", q);
+
+  const res = await fetch(`${origin}/api/users?${sp}`);
+  if (!res.ok) {
+    throw new Error(`Internal users API error: ${res.status}`);
+  }
+
+  const data: unknown = await res.json();
+  const rows = normalizeUsersResponse(data);
+  const filtered = q ? filterUsersByQuery(rows, q) : rows;
+
+  if (filtered.length === 0) {
+    if (!q) {
+      throw new Error("Empty or invalid users response from internal API.");
+    }
+    return { items: [], total: 0 };
+  }
+
+  if (typeof data === "object" && data !== null) {
+    const total = readNumericTotal(data as UnknownRecord);
+    if (total !== null && total > filtered.length) {
+      return { items: filtered, total };
+    }
+  }
+
+  return paginateLocal(filtered, params.page, params.pageSize);
+}
+
+async function fetchUserDetailViaInternalApi(
+  id: string,
+): Promise<UserDetailData | null> {
+  const origin =
+    typeof window !== "undefined" ? window.location.origin : null;
+  if (!origin) {
+    throw new Error("Internal API fallback is only available in browser runtime.");
+  }
+
+  const res = await fetch(`${origin}/api/users/${encodeURIComponent(id)}`);
+  if (!res.ok) return null;
+  const data: unknown = await res.json();
+  return normalizeUserDetailResponse(data, id) ?? null;
+}
+
 function usesBuiltInUsersMock(): boolean {
   return !USERS_URL && !process.env.NEXT_PUBLIC_MOCK_API_BASE_URL?.trim();
 }
@@ -158,14 +217,20 @@ export async function fetchUsersForTablePaginated({
 
     return paginateLocal(filtered, page, pageSize);
   } catch (error) {
-    if (
-      process.env.NODE_ENV !== "production" &&
-      isAxiosError(error) &&
-      !error.response
-    ) {
-      const rows = getMockUserRows();
-      const base = q ? filterUsersByQuery(rows, q) : [...rows];
-      return paginateLocal(base, page, pageSize);
+    if (isAxiosError(error) && !error.response) {
+      try {
+        return await fetchUsersPageViaInternalApi({
+          searchQuery: q,
+          page,
+          pageSize,
+        });
+      } catch {
+        if (process.env.NODE_ENV !== "production") {
+          const rows = getMockUserRows();
+          const base = q ? filterUsersByQuery(rows, q) : [...rows];
+          return paginateLocal(base, page, pageSize);
+        }
+      }
     }
     throw error;
   }
@@ -213,12 +278,19 @@ export async function getUserDetailById(
   } catch (error) {
     const cached = readUserDetailFromStorage(id);
     if (cached) return cached;
-    if (
-      process.env.NODE_ENV !== "production" &&
-      isAxiosError(error) &&
-      !error.response
-    ) {
-      return getUserDetail(id) ?? null;
+    if (isAxiosError(error) && !error.response) {
+      try {
+        const fallbackDetail = await fetchUserDetailViaInternalApi(id);
+        if (fallbackDetail) {
+          writeUserDetailToStorage(fallbackDetail);
+          return fallbackDetail;
+        }
+      } catch {
+        // fall through to existing non-production local seed fallback
+      }
+      if (process.env.NODE_ENV !== "production") {
+        return getUserDetail(id) ?? null;
+      }
     }
     throw error;
   }
