@@ -1,5 +1,33 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Data Layer Structure
+
+The app now uses a scalable data architecture with clear separation of concerns:
+
+- `src/api/`: Axios client and API request functions.
+- `src/query/`: custom React Query hooks.
+- `src/queryOptions/`: reusable query configuration objects.
+- `src/types/`: shared domain types used across UI and data layers.
+
+### Mock APIs (Mocky.io / JSON Generator)
+
+1. Generate user payloads with [JSON Generator](https://www.json-generator.com/).
+2. Paste the generated JSON in [Mocky.io](https://designer.mocky.io/) and publish.
+3. Copy `.env.example` to `.env.local`.
+4. Set:
+   - `NEXT_PUBLIC_MOCK_API_BASE_URL` (for Mocky this is usually `https://run.mocky.io/v3/`)
+   - `NEXT_PUBLIC_LOGIN_URL` (optional full URL override for login, e.g. `https://mocki.io/v1/<uuid>`)
+   - `NEXT_PUBLIC_USERS_URL` (optional full URL override for users list endpoint)
+   - `NEXT_PUBLIC_USER_DETAILS_URL` (optional endpoint template override, supports `{id}` or `:id`)
+
+The app will call these routes relative to that base URL (unless `NEXT_PUBLIC_LOGIN_URL` is set):
+
+- `login`
+- `user`
+- `userdetails/{id}`
+
+The users list query, user detail query, and login mutation use Axios + async/await + TanStack Query and are intended to read from your mock API endpoints.
+
 ## Getting Started
 
 First, run the development server:
